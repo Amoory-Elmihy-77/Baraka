@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: 'https://baraka-4k4i.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
