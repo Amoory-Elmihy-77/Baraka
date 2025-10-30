@@ -1,4 +1,5 @@
 import LoginForm from '@/components/auth/LoginForm';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Login - Baraka',
@@ -10,7 +11,9 @@ export default function LoginPage() {
     <div>
       <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Welcome Back</h1>
       <p className="text-gray-600 mb-8 text-center">Login to continue to your dashboard</p>
-      <LoginForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
