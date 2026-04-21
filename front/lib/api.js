@@ -1,10 +1,10 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const api = axios.create({
-  baseURL: 'https://baraka-4k4i.onrender.com/api',
+  baseURL: "http://localhost:5001/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   withCredentials: false, // Set to true if your backend requires credentials
   timeout: 10000, // 10 second timeout
@@ -13,7 +13,7 @@ const api = axios.create({
 // Request interceptor to attach token from cookies
 api.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,7 +21,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor to handle auth errors
@@ -30,26 +30,27 @@ api.interceptors.response.use(
   (error) => {
     // Handle network errors
     if (!error.response) {
-      console.error('Network Error:', error.message);
-      if (error.code === 'ECONNABORTED') {
-        error.message = 'Request timeout. Please check your connection.';
-      } else if (error.message === 'Network Error') {
-        error.message = 'Cannot connect to server. Please ensure the backend is running at http://localhost:5001';
+      console.error("Network Error:", error.message);
+      if (error.code === "ECONNABORTED") {
+        error.message = "Request timeout. Please check your connection.";
+      } else if (error.message === "Network Error") {
+        error.message =
+          "Cannot connect to server. Please ensure the backend is running at http://localhost:5001";
       }
     }
 
     // Handle HTTP errors
     if (error.response?.status === 401) {
       // Unauthorized - clear token
-      Cookies.remove('token');
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      Cookies.remove("token");
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
       }
     }
 
     // Enhanced error logging for debugging
-    if (process.env.NODE_ENV === 'development') {
-      console.error('API Error:', {
+    if (process.env.NODE_ENV === "development") {
+      console.error("API Error:", {
         url: error.config?.url,
         method: error.config?.method,
         status: error.response?.status,
@@ -59,8 +60,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
-
